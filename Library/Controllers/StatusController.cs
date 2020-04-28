@@ -40,16 +40,30 @@ namespace LibraryApi.Controllers
         }
 
         [HttpGet("whoami")]
-        public ActionResult WhoAmi([FromHeader (Name = "User-Agent")] string useragent)
+        public ActionResult WhoAmi([FromHeader(Name = "User-Agent")] string useragent)
         {
             return Ok($"I see you are running {useragent}");
         }
 
-        public class StatusResponse
+        [HttpPost("employees")]
+        public ActionResult HireEmployee([FromBody] EmployeeHireModel employee,
+            [FromHeader (Name = "Content-Type")] string content)
         {
-            public string Message { get; set; }
-            public string CheckedBy { get; set; }
-            public DateTime WhenLastChecked { get; set; }
+            return Ok($"Hiring {employee.FirstName} as a {employee.Role}"); // Should be 'Created(....'
         }
+    }
+
+    public class StatusResponse
+    {
+        public string Message { get; set; }
+        public string CheckedBy { get; set; }
+        public DateTime WhenLastChecked { get; set; }
+    }
+
+    public class EmployeeHireModel
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Role { get; set; }
     }
 }
