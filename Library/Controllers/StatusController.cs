@@ -39,6 +39,11 @@ namespace LibraryApi.Controllers
             return Ok($"Returning employees for department {dept}");
         }
 
+        [HttpGet("whoami")]
+        public ActionResult WhoAmi([FromHeader (Name = "User-Agent")] string useragent)
+        {
+            return Ok($"I see you are running {useragent}");
+        }
 
         public class StatusResponse
         {
