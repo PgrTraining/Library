@@ -17,6 +17,24 @@ namespace LibraryApi.Controllers
             this.Context = context;
         }
 
+        [HttpPut]
+
+        [HttpDelete("books/{bookId:int}")]
+        public async Task<ActionResult> RemoveABook(int bookId)
+        {
+            var bookToRemove = await Context.Books
+                .Where(b => b.InStock && b.Id == bookId)
+                .SingleOrDefaultAsync();
+
+            if (bookToRemove != null)
+            {
+                bookToRemove.InStock = false;
+                await Context.SaveChangesAsync();
+            }
+
+            return NoContent(); // send back a "Fine"
+        }
+
         [HttpPost("books")]
         public async Task<ActionResult> AddABook([FromBody] AddABookModel bookToAdd)
         {
@@ -81,7 +99,7 @@ namespace LibraryApi.Controllers
         }
 
         [HttpGet("books")]
-        public async Task<ActionResult> GetAllBooks([FromQuery] string genre)
+        public async Task<ActionResult<GetBooksResponse>> GetAllBooks([FromQuery] string genre)
         {
             var books = Context.Books
                 .Where(b => b.InStock)
