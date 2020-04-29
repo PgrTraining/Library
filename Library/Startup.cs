@@ -67,7 +67,7 @@ namespace LibraryApi
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Library API");
-                c.RoutePrefix = "docs";
+                c.RoutePrefix = "";
             });
             app.UseAuthorization();
 
