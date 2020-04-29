@@ -17,7 +17,23 @@ namespace LibraryApi.Controllers
             this.Context = context;
         }
 
-        [HttpPut]
+        [HttpPut("books/{bookId:int}/numberofpages")]
+        public async Task<ActionResult> ChangeNumberOfPages(int bookId, [FromBody] int numberOfPages)
+        {
+            var book = await Context.Books
+                .Where(b => b.Id == bookId && b.InStock)
+                .SingleOrDefaultAsync();
+
+            if(book != null)
+            {
+                book.NumberOfPages = numberOfPages;
+                await Context.SaveChangesAsync();
+                return NoContent();
+            } else
+            {
+                return NotFound();
+            }
+        }
 
         [HttpDelete("books/{bookId:int}")]
         public async Task<ActionResult> RemoveABook(int bookId)
